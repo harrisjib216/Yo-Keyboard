@@ -14,7 +14,35 @@
 		3353EF8D27A78A4A00E22097 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3353EF8C27A78A4A00E22097 /* Assets.xcassets */; };
 		3353EF9027A78A4A00E22097 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3353EF8E27A78A4A00E22097 /* LaunchScreen.storyboard */; };
 		3353EF9327A78A4A00E22097 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3353EF9227A78A4A00E22097 /* main.m */; };
+		3353EFA127A78A7400E22097 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3353EFA027A78A7400E22097 /* KeyboardViewController.m */; };
+		3353EFA527A78A7400E22097 /* YoKey.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3353EF9D27A78A7400E22097 /* YoKey.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3353EFAD27A78DA200E22097 /* YoKeyStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3353EFAC27A78DA200E22097 /* YoKeyStoryboard.storyboard */; };
+		338E93A727AA182100752C58 /* KeyboardKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 338E93A627AA182100752C58 /* KeyboardKey.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3353EFA327A78A7400E22097 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3353EF7527A78A4900E22097 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3353EF9C27A78A7400E22097;
+			remoteInfo = YoKey;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3353EFA927A78A7400E22097 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3353EFA527A78A7400E22097 /* YoKey.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3353EF7D27A78A4900E22097 /* Yo Keyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Yo Keyboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,10 +57,24 @@
 		3353EF8F27A78A4A00E22097 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3353EF9127A78A4A00E22097 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3353EF9227A78A4A00E22097 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3353EF9D27A78A7400E22097 /* YoKey.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YoKey.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3353EF9F27A78A7400E22097 /* KeyboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
+		3353EFA027A78A7400E22097 /* KeyboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
+		3353EFA227A78A7400E22097 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3353EFAC27A78DA200E22097 /* YoKeyStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = YoKeyStoryboard.storyboard; sourceTree = "<group>"; };
+		338E93A527AA182100752C58 /* KeyboardKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardKey.h; sourceTree = "<group>"; };
+		338E93A627AA182100752C58 /* KeyboardKey.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardKey.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		3353EF7A27A78A4900E22097 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3353EF9A27A78A7400E22097 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				3353EF7F27A78A4900E22097 /* Yo Keyboard */,
+				3353EF9E27A78A7400E22097 /* YoKey */,
 				3353EF7E27A78A4900E22097 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				3353EF7D27A78A4900E22097 /* Yo Keyboard.app */,
+				3353EF9D27A78A7400E22097 /* YoKey.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +120,19 @@
 			path = "Yo Keyboard";
 			sourceTree = "<group>";
 		};
+		3353EF9E27A78A7400E22097 /* YoKey */ = {
+			isa = PBXGroup;
+			children = (
+				338E93A527AA182100752C58 /* KeyboardKey.h */,
+				338E93A627AA182100752C58 /* KeyboardKey.m */,
+				3353EF9F27A78A7400E22097 /* KeyboardViewController.h */,
+				3353EFA027A78A7400E22097 /* KeyboardViewController.m */,
+				3353EFAC27A78DA200E22097 /* YoKeyStoryboard.storyboard */,
+				3353EFA227A78A7400E22097 /* Info.plist */,
+			);
+			path = YoKey;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -86,15 +143,34 @@
 				3353EF7927A78A4900E22097 /* Sources */,
 				3353EF7A27A78A4900E22097 /* Frameworks */,
 				3353EF7B27A78A4900E22097 /* Resources */,
+				3353EFA927A78A7400E22097 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3353EFA427A78A7400E22097 /* PBXTargetDependency */,
 			);
 			name = "Yo Keyboard";
 			productName = "Yo Keyboard";
 			productReference = 3353EF7D27A78A4900E22097 /* Yo Keyboard.app */;
 			productType = "com.apple.product-type.application";
+		};
+		3353EF9C27A78A7400E22097 /* YoKey */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3353EFA627A78A7400E22097 /* Build configuration list for PBXNativeTarget "YoKey" */;
+			buildPhases = (
+				3353EF9927A78A7400E22097 /* Sources */,
+				3353EF9A27A78A7400E22097 /* Frameworks */,
+				3353EF9B27A78A7400E22097 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YoKey;
+			productName = YoKey;
+			productReference = 3353EF9D27A78A7400E22097 /* YoKey.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -106,6 +182,9 @@
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					3353EF7C27A78A4900E22097 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					3353EF9C27A78A7400E22097 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
@@ -124,6 +203,7 @@
 			projectRoot = "";
 			targets = (
 				3353EF7C27A78A4900E22097 /* Yo Keyboard */,
+				3353EF9C27A78A7400E22097 /* YoKey */,
 			);
 		};
 /* End PBXProject section */
@@ -136,6 +216,14 @@
 				3353EF9027A78A4A00E22097 /* LaunchScreen.storyboard in Resources */,
 				3353EF8D27A78A4A00E22097 /* Assets.xcassets in Resources */,
 				3353EF8B27A78A4900E22097 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3353EF9B27A78A7400E22097 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3353EFAD27A78DA200E22097 /* YoKeyStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +241,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3353EF9927A78A7400E22097 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				338E93A727AA182100752C58 /* KeyboardKey.m in Sources */,
+				3353EFA127A78A7400E22097 /* KeyboardViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3353EFA427A78A7400E22097 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3353EF9C27A78A7400E22097 /* YoKey */;
+			targetProxy = 3353EFA327A78A7400E22097 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3353EF8927A78A4900E22097 /* Main.storyboard */ = {
@@ -339,6 +444,52 @@
 			};
 			name = Release;
 		};
+		3353EFA727A78A7400E22097 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YoKey/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YoKey;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jibril.Yo-Keyboard.YoKey";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3353EFA827A78A7400E22097 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YoKey/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YoKey;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jibril.Yo-Keyboard.YoKey";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -356,6 +507,15 @@
 			buildConfigurations = (
 				3353EF9727A78A4A00E22097 /* Debug */,
 				3353EF9827A78A4A00E22097 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3353EFA627A78A7400E22097 /* Build configuration list for PBXNativeTarget "YoKey" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3353EFA727A78A7400E22097 /* Debug */,
+				3353EFA827A78A7400E22097 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
