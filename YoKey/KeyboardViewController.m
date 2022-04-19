@@ -40,11 +40,13 @@
     NSArray *row2 = @[@"q", @"w", @"e", @"r", @"t", @"y", @"u", @"i", @"o", @"p", @"⬆️"];
     NSArray *row3 = @[@"a", @"s", @"d", @"f", @"g", @"h", @"j", @"j", @"k", @"l", @"↩️"];
     NSArray *row4 = @[@"-", @"?", @"x", @"c", @"v", @"b", @"n", @"m", @".", @",", @"⬅️"];
+    NSArray *row5 = @[@"🗣", @"🇲🇽", @"🇷🇺", @"🇯🇵"];
 
     [self addRowOfKeys: row1 rowLevel: 0];
     [self addRowOfKeys: row2 rowLevel: 1];
     [self addRowOfKeys: row3 rowLevel: 2];
     [self addRowOfKeys: row4 rowLevel: 3];
+    [self addRowOfKeys: row5 rowLevel: 4];
 }
 
 // inserts the key, styles it, add the onPress handlers
@@ -52,11 +54,16 @@
     // convert into properties
     const int keyMargin = 7;
     const float keyWidth = ([_keyboardContainer bounds].size.width - (10 * (keyMargin / 2))) / 11;
-    const float keyHeight = ([_keyboardContainer bounds].size.height - 7) / 5;
+    float keyHeight = ([_keyboardContainer bounds].size.height - 7) / 5;
     
     float xPosition = 0;
     float yPosition = level * (keyHeight + 7);
     KeyboardKey *tempKey;
+    
+    if (level == 4) {
+        xPosition = (keyWidth + keyMargin) * 3;
+        keyHeight = ([_keyboardContainer bounds].size.height - 7) / 7;
+    }
 
     for (NSString *key in row) {
         // shape and color
@@ -89,24 +96,14 @@
 
 - (void) onKeyPress: (KeyboardKey *) sender {
     if ([sender.label isEqual: @"😀"]) {
-        // open emoji keyboard
-        
+        // todo: build and open emoji keyboard
     }
     else if ([sender.label isEqual: @"⬆️"]) {
-        // shift key, capitalize each letter
-        [self setShowCapitalLetters: !self.showCapitalLetters];
-        
-        NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
-        for (KeyboardKey *key in _keyboardContainer.subviews) {
-            if ([key.label rangeOfCharacterFromSet: notDigits].location != NSNotFound) {
-                if (self.showCapitalLetters) {
-                    [key setTitle: [key.label uppercaseString] forState: UIControlStateNormal];
-                    [key setLabel: [key.label uppercaseString]];
-                } else {
-                    [key setTitle: [key.label lowercaseString] forState: UIControlStateNormal];
-                    [key setLabel: [key.label lowercaseString]];
-                }
-            }
+        // shift key: toggle capitalization of each letter
+        if (self.showCapitalLetters) {
+            [self lowercaseTheKeyboard];
+        } else {
+            [self capitializeTheKeyboard];
         }
     }
     else if ([sender.label isEqual: @"↩️"]) {
@@ -117,9 +114,48 @@
         // delete text
         [self.textDocumentProxy deleteBackward];
     }
+    else if ([sender.label isEqual: @"🗣"]) {
+        // translate to native language
+    }
+    else if ([sender.label isEqual: @"🇲🇽"]) {
+        // spanish
+    }
+    else if ([sender.label isEqual: @"🇷🇺"]) {
+        // russian
+    }
+    else if ([sender.label isEqual: @"🇯🇵"]) {
+        // japanese
+    }
     else {
         // regular key, add this character
         [self.textDocumentProxy insertText: sender.label];
+        [self lowercaseTheKeyboard];
+    }
+}
+
+// capitalize the keyboard
+- (void)capitializeTheKeyboard {
+    [self setShowCapitalLetters: true];
+
+    NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    for (KeyboardKey *key in _keyboardContainer.subviews) {
+        if ([key.label rangeOfCharacterFromSet: notDigits].location != NSNotFound) {
+            [key setTitle: [key.label uppercaseString] forState: UIControlStateNormal];
+            [key setLabel: [key.label uppercaseString]];
+        }
+    }
+}
+
+// lowercase the keyboard
+- (void)lowercaseTheKeyboard {
+    [self setShowCapitalLetters: false];
+
+    NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    for (KeyboardKey *key in _keyboardContainer.subviews) {
+        if ([key.label rangeOfCharacterFromSet: notDigits].location != NSNotFound) {
+            [key setTitle: [key.label lowercaseString] forState: UIControlStateNormal];
+            [key setLabel: [key.label lowercaseString]];
+        }
     }
 }
 
