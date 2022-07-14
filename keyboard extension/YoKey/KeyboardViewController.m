@@ -19,13 +19,6 @@
 @synthesize currentLanguage;
 @synthesize currentMessage;
 
-const NSDictionary *languageKeys = @{
-    @"🗣": @"en",
-    @"🇲🇽": @"sp",
-    @"🇷🇺": @"ru",
-    @"🇯🇵": @"jp",
-};
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -50,7 +43,7 @@ const NSDictionary *languageKeys = @{
     NSArray *row2 = @[@"q", @"w", @"e", @"r", @"t", @"y", @"u", @"i", @"o", @"p", @"⬆️"];
     NSArray *row3 = @[@"a", @"s", @"d", @"f", @"g", @"h", @"j", @"j", @"k", @"l", @"↩️"];
     NSArray *row4 = @[@"-", @"?", @"x", @"c", @"v", @"b", @"n", @"m", @".", @",", @"⬅️"];
-    NSArray *row5 = @[@"🗣", @"🇲🇽", @"🇷🇺", @"🇯🇵"];
+    NSArray *row5 = @[@"space", @"🇺🇸", @"🇲🇽", @"🇷🇺", @"🇯🇵"];
 
     [self addRowOfKeys: row1 rowLevel: 0];
     [self addRowOfKeys: row2 rowLevel: 1];
@@ -67,11 +60,11 @@ const NSDictionary *languageKeys = @{
     float keyHeight = ([_keyboardContainer bounds].size.height - 7) / 5;
     
     float xPosition = 0;
-    float yPosition = level * (keyHeight + 7);
+    float yPosition = level * (keyHeight + 5);
     KeyboardKey *tempKey;
     
     if (level == 4) {
-        xPosition = (keyWidth + keyMargin) * 3;
+        xPosition = (keyWidth + keyMargin) * 2;
         keyHeight = ([_keyboardContainer bounds].size.height - 7) / 7;
     }
 
@@ -92,7 +85,13 @@ const NSDictionary *languageKeys = @{
         [tempKey layer].cornerRadius = 4.0f;
 
         // position
-        tempKey.frame = CGRectMake(xPosition, yPosition, keyWidth, keyHeight);
+        if ([key isEqual: @"space"]) {
+            tempKey.frame = CGRectMake(xPosition, yPosition, 100.0, keyHeight);
+            xPosition += 100.0 + keyMargin;
+        } else {
+            tempKey.frame = CGRectMake(xPosition, yPosition, keyWidth, keyHeight);
+            xPosition += keyWidth + keyMargin;
+        }
         
         // add event handler
         [tempKey setLabel: key];
@@ -100,11 +99,16 @@ const NSDictionary *languageKeys = @{
         
         // append to the container
         [_keyboardContainer addSubview: tempKey];
-        xPosition += keyWidth + keyMargin;
     }
 }
 
 - (void) onKeyPress: (KeyboardKey *) sender {
+    const NSDictionary *languageKeys = @{
+        @"🇺🇸": @"en",
+        @"🇲🇽": @"es",
+        @"🇷🇺": @"ru",
+        @"🇯🇵": @"ja",
+    };
     
     NSString *newLanguage = [languageKeys objectForKey: sender.label];
     if (newLanguage != nil && newLanguage != self.currentLanguage) {
@@ -130,6 +134,10 @@ const NSDictionary *languageKeys = @{
     else if ([sender.label isEqual: @"⬅️"]) {
         // delete text
         [self.textDocumentProxy deleteBackward];
+    }
+    else if ([sender.label isEqual: @"space"]) {
+        [self setCurrentMessage: [NSString stringWithFormat: @"%@ ", currentMessage]];
+        [self.textDocumentProxy insertText: @" "];
     }
     else {
         // regular key, add this character
@@ -167,57 +175,46 @@ const NSDictionary *languageKeys = @{
 
 // ping the translate API
 - (void)translateText: (NSString *) destination {
-    NSDictionary *headers = @{
-        @"Content-Type": @"application/json"
-    };
+    NSMutableDictionary *post = [[NSMutableDictionary alloc]init];
+    [post setValue:self.currentMessage forKey:@"text"];
+    [post setValue:self.currentLanguage forKey:@"from"];
+    [post setValue:destination forKey:@"to"];
 
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [
-        NSURL URLWithString:@"https://libretranslate.com/translate"
-    ]];
+    NSArray* notifications = [NSArray arrayWithObjects:post, nil];
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:notifications options:kNilOptions error:&writeError];
+    NSString *postLength = [NSString stringWithFormat:@"%d",[jsonData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]init];
+
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:3000/translate"]]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length" ];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:jsonData];
+        
+    NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [theConnection start];
     
-    NSString *bodyData = [NSString stringWithFormat:
-                             @"q=%@&source=%@&target=%@&format=text",
-                            self.currentMessage, self.currentLanguage, destination
-    ];
-    NSData *requestBody = [
-        bodyData
-        dataUsingEncoding:NSUTF8StringEncoding
-    ];
-    
-    [request setHTTPMethod: @"POST"];
-    [request setAllHTTPHeaderFields: headers];
-    [request setHTTPBody: requestBody];
-
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *dataTask = [
-        session
-        dataTaskWithRequest:request
-        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-
-            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-            
-            NSLog(@"%ld", httpResponse.statusCode);
-
-            if (httpResponse.statusCode == 200) {
-                NSError *parseError = nil;
-                
-                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-                
-                NSLog(@"The response is - %@", responseDictionary);
-                NSInteger success = [[responseDictionary objectForKey:@"success"] integerValue];
-                
-                if (success == 1) {
-                    NSLog(@"Login SUCCESS");
-                } else {
-                    NSLog(@"Login FAILURE");
-                }
-            } else {
-                NSLog(@"ERR");
-            }
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *response = nil;
+    NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+    if ([response statusCode] >= 200 && [response statusCode] < 300) {
+        NSData *responseData = [[NSData alloc]initWithData:urlData];
+        
+        NSMutableDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+        
+        for (int i = 0; i < [self.currentMessage length]; i++) {
+            [self.textDocumentProxy deleteBackward];
         }
-    ];
-    
-    [dataTask resume];
+        
+        NSLog(@"res: %@", jsonObject[@"res"]);
+        [self setCurrentMessage: jsonObject[@"res"]];
+        [self.textDocumentProxy insertText: self.currentMessage];
+    } else {
+       NSLog(@"Failed");
+   }
 }
 
 
