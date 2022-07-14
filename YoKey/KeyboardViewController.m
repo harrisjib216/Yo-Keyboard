@@ -16,7 +16,15 @@
 
 @synthesize showCapitalLetters;
 @synthesize showEmojiKeyboard;
+@synthesize currentLanguage;
+@synthesize currentMessage;
 
+const NSDictionary *languageKeys = @{
+    @"🗣": @"en",
+    @"🇲🇽": @"sp",
+    @"🇷🇺": @"ru",
+    @"🇯🇵": @"jp",
+};
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,9 +35,11 @@
     
     // add each key to the view ✅
     // style each key ✅
-    // define cusom actions
+    // define cusom actions ✅
     // make emoji slider
     // draw custom features
+    [self setCurrentLanguage: @"en"];
+    [self setCurrentMessage: @""];
     [self renderDefaultKeyboard];
 }
 
@@ -95,7 +105,14 @@
 }
 
 - (void) onKeyPress: (KeyboardKey *) sender {
-    if ([sender.label isEqual: @"😀"]) {
+    
+    NSString *newLanguage = [languageKeys objectForKey: sender.label];
+    if (newLanguage != nil && newLanguage != self.currentLanguage) {
+        // translate text
+        [self translateText: newLanguage];
+        [self setCurrentLanguage: newLanguage];
+    }
+    else if ([sender.label isEqual: @"😀"]) {
         // todo: build and open emoji keyboard
     }
     else if ([sender.label isEqual: @"⬆️"]) {
@@ -114,20 +131,9 @@
         // delete text
         [self.textDocumentProxy deleteBackward];
     }
-    else if ([sender.label isEqual: @"🗣"]) {
-        // translate to native language
-    }
-    else if ([sender.label isEqual: @"🇲🇽"]) {
-        // spanish
-    }
-    else if ([sender.label isEqual: @"🇷🇺"]) {
-        // russian
-    }
-    else if ([sender.label isEqual: @"🇯🇵"]) {
-        // japanese
-    }
     else {
         // regular key, add this character
+        [self setCurrentMessage: [NSString stringWithFormat: @"%@%@", currentMessage, sender.label]];
         [self.textDocumentProxy insertText: sender.label];
         [self lowercaseTheKeyboard];
     }
@@ -157,6 +163,61 @@
             [key setLabel: [key.label lowercaseString]];
         }
     }
+}
+
+// ping the translate API
+- (void)translateText: (NSString *) destination {
+    NSDictionary *headers = @{
+        @"Content-Type": @"application/json"
+    };
+
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [
+        NSURL URLWithString:@"https://libretranslate.com/translate"
+    ]];
+    
+    NSString *bodyData = [NSString stringWithFormat:
+                             @"q=%@&source=%@&target=%@&format=text",
+                            self.currentMessage, self.currentLanguage, destination
+    ];
+    NSData *requestBody = [
+        bodyData
+        dataUsingEncoding:NSUTF8StringEncoding
+    ];
+    
+    [request setHTTPMethod: @"POST"];
+    [request setAllHTTPHeaderFields: headers];
+    [request setHTTPBody: requestBody];
+
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [
+        session
+        dataTaskWithRequest:request
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+            
+            NSLog(@"%ld", httpResponse.statusCode);
+
+            if (httpResponse.statusCode == 200) {
+                NSError *parseError = nil;
+                
+                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+                
+                NSLog(@"The response is - %@", responseDictionary);
+                NSInteger success = [[responseDictionary objectForKey:@"success"] integerValue];
+                
+                if (success == 1) {
+                    NSLog(@"Login SUCCESS");
+                } else {
+                    NSLog(@"Login FAILURE");
+                }
+            } else {
+                NSLog(@"ERR");
+            }
+        }
+    ];
+    
+    [dataTask resume];
 }
 
 

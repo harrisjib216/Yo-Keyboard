@@ -17,5 +17,7 @@
 
 @property (nonatomic, readwrite) BOOL showCapitalLetters;
 @property (nonatomic, readwrite) BOOL showEmojiKeyboard;
+@property (nonatomic, readwrite) NSString *currentLanguage;
+@property (nonatomic, readwrite) NSString *currentMessage;
 
 @end

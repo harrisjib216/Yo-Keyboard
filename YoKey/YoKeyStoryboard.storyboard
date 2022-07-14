@@ -25,7 +25,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9FQ-6L-SON" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="8" id="7ku-uP-f6Y"/>
                             <constraint firstItem="9FQ-6L-SON" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="awY-9S-HDL"/>
@@ -45,9 +45,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
